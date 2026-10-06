@@ -1,0 +1,19 @@
+# Multi-agent research: OpenAI + Tavily + BeautifulSoup + LCEL
+# Direct dependencies; versions are unpinned, not a tested lockfile.
+
+# Agents, prompts, tools, and LCEL Runnables
+langchain
+langchain-core
+langchain-openai
+
+# Tavily search integration
+langchain-tavily
+
+# Fetch and parse web pages for a custom scraping tool
+requests
+beautifulsoup4
+lxml
+
+# Environment variables and structured tool inputs/outputs
+python-dotenv
+pydantic
