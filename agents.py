@@ -3,19 +3,29 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain.agents import create_agent
-from langchain_openai import ChatOpenAI
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
 load_dotenv(Path(__file__).with_name(".env"))
 
 from tools import web_search, scrape_url
- 
-# 0 model 
-llm = ChatOpenAI(
-    model=os.getenv("OPENAI_MODEL", "gpt-5-nano"),
-    timeout=0,
-    max_retries=2,
+
+hf_token = os.getenv("HF_TOKEN")
+
+if not hf_token:
+    raise ValueError("Add HF_TOKEN to your project's .env file.")
+
+endpoint = HuggingFaceEndpoint(
+    repo_id="deepseek-ai/DeepSeek-R1-0528",
+    task="text-generation",
+    provider="auto",
+    huggingfacehub_api_token=hf_token,
+    max_new_tokens=4096,
+    timeout=120,
 )
+
+llm = ChatHuggingFace(llm=endpoint)
 
 # 1. Search agent
 search_agent = create_agent(
